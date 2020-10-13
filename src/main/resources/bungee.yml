@@ -1,0 +1,4 @@
+name: PLJRApi-Bungee
+version: ${project.version}
+main: me.pljr.pljrapibungee.PLJRApiBungee
+description: BungeeCord plugin for PLJRApi.
