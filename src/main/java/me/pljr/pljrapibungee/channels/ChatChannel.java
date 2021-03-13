@@ -1,50 +1,40 @@
 package me.pljr.pljrapibungee.channels;
 
-import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import me.pljr.pljrapibungee.PLJRApiBungee;
+import me.pljr.pljrapibungee.utils.ChatUtil;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.PluginMessageEvent;
+import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.event.EventHandler;
 
-import java.util.Collection;
-import java.util.Map;
+public class ChatChannel implements Listener {
+    private final ProxyServer proxy;
 
-public class ChatChannel {
-
-    public ChatChannel(){
-        PLJRApiBungee.getInstance().getProxy().registerChannel("pljrapi:chat");
+    public ChatChannel(ProxyServer proxy){
+        this.proxy = proxy;
+        proxy.registerChannel("plrjapi:chat");
     }
 
-    public void sendMessage(String player, String message){
-        Collection<ProxiedPlayer> networkPlayers = ProxyServer.getInstance().getPlayers();
-        if (networkPlayers == null || networkPlayers.isEmpty()){
-            return;
-        }
-        ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
-        if (proxiedPlayer == null) return;
-
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("message");
-        out.writeUTF(player);
-        out.writeUTF(message);
-
-        proxiedPlayer.getServer().getInfo().sendData("pljrapi:chat", out.toByteArray());
-    }
-
-    public void broadcastMessage(String perm, String message){
-        Collection<ProxiedPlayer> networkPlayers = ProxyServer.getInstance().getPlayers();
-        if (networkPlayers == null || networkPlayers.isEmpty()){
-            return;
-        }
-
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("broadcast");
-        out.writeUTF(perm);
-        out.writeUTF(message);
-
-        for (Map.Entry<String, ServerInfo> entry : ProxyServer.getInstance().getServers().entrySet()){
-            ProxyServer.getInstance().getServerInfo(entry.getKey()).sendData("pljrapi:chat", out.toByteArray());
+    @EventHandler
+    public void onReceive(PluginMessageEvent event) {
+        if (event.getTag().equals("pljrapi:chat")) {
+            ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
+            String subChannel = in.readUTF();
+            switch (subChannel.toUpperCase()){
+                case "MESSAGE": {
+                    ProxiedPlayer player = proxy.getPlayer(in.readUTF());
+                    if (player != null) {
+                        ChatUtil.sendMessage(player, in.readUTF());
+                    }
+                    break;
+                }
+                case "BROADCAST": {
+                    ChatUtil.broadcast(in.readUTF(), in.readUTF());
+                    break;
+                }
+            }
         }
     }
 }

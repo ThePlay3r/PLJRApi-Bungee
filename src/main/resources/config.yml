@@ -1,0 +1,31 @@
+# Big thanks and love for using my plugins! ^^
+
+#|--------------------------------------------------------------------------------------------------------------------|#
+# Plugin: PLJRApi-Bungee
+# Author: https://www.mc-market.org/members/89497/
+# Description: Main API for all of my plugins to work.
+# Dependencies:
+#   -> MySQL Database
+#|--------------------------------------------------------------------------------------------------------------------|#
+
+###############\
+# MySQL Setup ##############################################################################################\
+############### This is the most important part, as the plugin can not work without proper MySQL Database. # \
+              ##############################################################################################  \
+mysql:
+  host: "127.0.0.1"
+  port: "3306"
+  database: "db"
+  username: "root"
+  password: ""
+
+# Detailed documentation about this configuration: https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+mysql-settings:
+  maximumPoolSize: 16
+  maximumIdle: 2
+  maxLifetime: 1800000
+  connectionTimeout: 30000
+  cachePrepStmts: true
+  prepStmtCacheSize: 250
+  prepStmtCacheSqlLimit: 2048
+#|--------------------------------------------------------------------------------------------------------------------|#
