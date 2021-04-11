@@ -60,29 +60,17 @@ public class DataSource {
     }
 
     public void close(Connection conn, PreparedStatement ps, ResultSet res) {
-        if (conn != null) {
-            try {
-                conn.close();
-            }catch (SQLException e) {
-                e.printStackTrace();
-            }
+        if (conn != null) try {
+            conn.close();
+        } catch (SQLException ignored) {
         }
-
-        if (ps != null) {
-            try {
-                ps.close();
-            }catch (SQLException e) {
-                e.printStackTrace();
-            }
+        if (ps != null) try {
+            ps.close();
+        } catch (SQLException ignored) {
         }
-
-        if (res != null) {
-            try {
-                res.close();
-            }catch (SQLException e) {
-                e.printStackTrace();
-            }
+        if (res != null) try {
+            res.close();
+        } catch (SQLException ignored) {
         }
-
     }
 }

@@ -1,5 +1,6 @@
 package me.pljr.pljrapibungee.config;
 
+import lombok.Getter;
 import me.pljr.pljrapibungee.utils.FormatUtil;
 import me.pljr.pljrapibungee.utils.NumberUtil;
 import net.md_5.bungee.api.ChatColor;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Getter
 public class ConfigManager {
     private final File file;
     private final Configuration config;
