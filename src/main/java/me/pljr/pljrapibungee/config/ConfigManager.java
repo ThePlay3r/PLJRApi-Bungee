@@ -57,7 +57,7 @@ public class ConfigManager {
             if (!file.exists()){
                 if (isResource){
                     InputStream in = plugin.getResourceAsStream(fileName);
-                    Files.copy(in, dataFolder.toPath());
+                    Files.copy(in, file.toPath());
                 }else{
                     file.createNewFile();
                 }
